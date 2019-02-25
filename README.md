@@ -2,8 +2,8 @@
 
 The following
 ```kotlin
-import ansi4k.Term256
-import ansi4k.invoke
+import termkolors.Term256
+import termkolors.invoke
 
 fun main() {
     with(Term256) {
