@@ -8,7 +8,11 @@ repositories {
 
 kotlin {
     jvm()
-    linuxX64()
+    linuxX64 {
+        binaries {
+            executable {}
+        }
+    }
 
     sourceSets {
         val commonMain by getting {

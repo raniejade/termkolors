@@ -1,77 +1,31 @@
 package ansi4k
 
-class StyledText(val text: String, val styles: List<AnsiSequence> = emptyList()) {
-    override fun toString(): String {
-        return if (styles.isNotEmpty()) {
-            "${styles.joinToString(separator = "")}$text$AnsiReset"
-        } else {
-            text
-        }
-    }
+sealed class Term<T: AnsiSequence>(sequenceFor: (StandardColor) -> T) {
+    val black = sequenceFor(StandardColor.BLACK)
+    val red = sequenceFor(StandardColor.RED)
+    val green = sequenceFor(StandardColor.GREEN)
+    val yellow = sequenceFor(StandardColor.YELLOW)
+    val blue = sequenceFor(StandardColor.BLUE)
+    val magenta = sequenceFor(StandardColor.MAGENTA)
+    val cyan = sequenceFor(StandardColor.CYAN)
+    val white = sequenceFor(StandardColor.WHITE)
+
+    val brightBlack = sequenceFor(StandardColor.BRIGHT_BLACK)
+    val brightRed = sequenceFor(StandardColor.BRIGHT_RED)
+    val brightGreen = sequenceFor(StandardColor.BRIGHT_GREEN)
+    val brightYellow = sequenceFor(StandardColor.BRIGHT_YELLOW)
+    val brightBlue = sequenceFor(StandardColor.BRIGHT_BLUE)
+    val brightMagenta = sequenceFor(StandardColor.BRIGHT_MAGENTA)
+    val brightCyan = sequenceFor(StandardColor.BRIGHT_CYAN)
+    val brightWhite = sequenceFor(StandardColor.BRIGHT_WHITE)
+
+    val bold = AnsiBold
+    val underline = AnsiUnderline
 }
-
-typealias Style = StyleParams.() -> Unit
-class StyleParams {
-    var bold: Boolean = false
-    var underlined: Boolean = false
-    var foreground: Color? = null
-    var background: Color? = null
-}
-
-sealed class Term {
-    fun String.styled(block: Style): StyledText {
-        val params = StyleParams()
-        params.block()
-        val styles = mutableListOf<AnsiSequence>()
-
-        params.run {
-            foreground?.let {
-                styles.add(toAnsiColor(it, true))
-            }
-
-            background?.let {
-                styles.add(toAnsiColor(it, false))
-            }
-
-            if (bold) {
-                styles.add(AnsiBold)
-            }
-
-            if (underlined) {
-                styles.add(AnsiUnderline)
-            }
-        }
-
-        return StyledText(this, styles.toList())
-    }
-
-    fun style(block: Style): Style {
-        return block
-    }
-
-    protected abstract fun toAnsiColor(color: Color, foreground: Boolean): AnsiColor
-}
-
-object Term16: Term() {
-    override fun toAnsiColor(color: Color, foreground: Boolean): AnsiColor {
-        if (color !is StandardColor) {
-            throw UnsupportedOperationException("Unsupported color: $color")
-        }
-
-        return Ansi16(color, foreground)
-    }
-
-}
-
-fun main() {
-    with(Term16) {
-        val myStyle = style {
-            foreground = StandardColor.CYAN
-            bold = true
-            underlined = true
-        }
-
-        val a = "Hello world".styled(myStyle)
-        println(a)
+object Term16: Term<AnsiForeground16>(::AnsiForeground16)
+object Term256: Term<AnsiForeground256>(::AnsiForeground256) {
+    fun color(code: Int): AnsiForeground256 {
+        check(code in 0..255) { "code must be between 0 and 255" }
+        return AnsiForeground256(code)
     }
 }
