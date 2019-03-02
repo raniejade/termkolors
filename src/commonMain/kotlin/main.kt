@@ -17,9 +17,9 @@ fun main() {
         println()
 
         val section = (color(255))
-        val pass = green
-        val skipped = yellow
-        val failed = red
+        val pass = color(76)
+        val skipped = color(184)
+        val failed = color(160)
 
         println("# Console reporter for a test framework")
         println((section + underline)("START"))
