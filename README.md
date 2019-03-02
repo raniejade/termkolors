@@ -1,4 +1,5 @@
 # termkolors
+[![Build Status](https://travis-ci.com/raniejade/termkolors.svg?branch=master)](https://travis-ci.com/raniejade/termkolors)
 
 The following
 ```kotlin
