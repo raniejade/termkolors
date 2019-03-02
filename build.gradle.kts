@@ -14,6 +14,12 @@ kotlin {
         }
     }
 
+    macosX64 {
+        binaries {
+            executable {}
+        }
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
