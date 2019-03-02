@@ -24,7 +24,6 @@ reckon {
 kotlin {
     val configureNativeTarget: KotlinNativeTarget.() -> Unit = {
         binaries {
-            staticLib()
             // testing only
             executable()
         }
