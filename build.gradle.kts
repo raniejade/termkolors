@@ -69,7 +69,6 @@ val releaseMode = "$version".matches(Regex.fromLiteral("^\\d+\\.\\d+\\.\\d+(-rc\
 bintray {
     user = System.getenv("BINTRAY_USER")
     key = System.getenv("BINTRAY_API_KEY")
-    dryRun = true
     publish = !releaseMode
     with(pkg) {
         repo = if (releaseMode) {
