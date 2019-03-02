@@ -1,20 +1,21 @@
-dist: xenial
-language: shell
-
 branches:
   only: master
 
-os:
-  - linux
-  - windows
-  - osx
+templates:
+  build-template: &build
+    language: shell
+    before_script:
+      - curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
+      - jabba install zulu@1.10.0-2
+      - jabba use zulu@1.10.0-2
+    script:
+      - ./gradlew check
 
 jobs:
   include:
-    - stage: test
-      before_script:
-        - curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
-        - jabba install zulu@1.10.0-2
-        - jabba use zulu@1.10.0-2
-      script:
-        - ./gradlew check
+    - os: linux
+      *build
+    - os: osx
+      *build
+    - os: windows
+      *build
