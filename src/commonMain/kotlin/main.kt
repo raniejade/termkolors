@@ -27,9 +27,10 @@ fun main() {
         println(INDENT.repeat(2) + section("addition"))
         println(INDENT.repeat(3) + pass("\u2713$INDENT" + "1 + 2 == 3"))
         println(INDENT.repeat(3) + pass("\u2713$INDENT" + "1 + -1 == 0"))
+        println()
         println((section + underline)("SUMMARY:"))
-        println(pass("\u2713 2 tests completed"))
-        println(skipped("\u2726 0 tests skipped"))
-        println(failed("\u2717 0 tests failed"))
+        println(INDENT + pass("\u2713 2 tests completed"))
+        println(INDENT + skipped("\u2726 0 tests skipped"))
+        println(INDENT + failed("\u2717 0 tests failed"))
     }
 }
